@@ -1,1 +1,27 @@
+<div data-controller="canvas-composer image-exporter" class="grid place-items-center mt-12 max-w-5xl">
+  <div class="grid grid-cols-[1fr_clamp(240px,12%,480px)] gap-8">
+    <div>
+      <canvas data-canvas-composer-target="canvas" width="300" height="300" data-action="mousedown->canvas-composer#selectEmoji mousemove->canvas-composer#moveSelectedEmoji mouseup->canvas-composer#deselectEmoji" class="bg-white border border-gray-200 rounded-lg"></canvas>
 
+      <div class="grid grid-cols-2 mt-2 gap-x-3 *:w-full *:bg-gray-300 *:rounded-md">
+        <button data-action="click->canvas-composer#clearAll">
+          Clear canvas
+        </button>
+
+        <button data-action="click->image-exporter#download">
+          Save as image
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6">
+      <ul class="grid grid-cols-2 gap-1">
+        <%= render partial: "button", collection: %w[😀 😊 😠 😮 😳 😉 😟 😐 🥺 🙄 👶 👦 👧 🧑 👨 👩 🧓 👴 👵 🤖], as: :emoji %>
+      </ul>
+
+      <ul class="grid grid-cols-2 gap-1">
+        <%= render partial: "button", collection: %w[👑 🎩 👒 🧢 ⛑️ 👓 🕶️ 🥽 💄 📣 👄 💧 👅 👂 👃 👁️ ☂️ 👍 🖕 👋], as: :emoji %>
+      </ul>
+    </div>
+  </div>
+</div>

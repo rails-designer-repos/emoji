@@ -2,10 +2,22 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   download() {
-    const canvas = this.#canvasElement
-    const imageData = canvas.toDataURL("image/png")
+    const svg = this.element.querySelector("svg")
+    const source = new XMLSerializer().serializeToString(svg)
+    const image = new Image()
 
-    this.#trigger(this.#downloadLink(imageData))
+    image.onload = () => {
+      const size = 600
+      const canvas = document.createElement("canvas")
+
+      canvas.width = size
+      canvas.height = size
+      canvas.getContext("2d").drawImage(image, 0, 0, size, size)
+
+      this.#trigger(this.#downloadLink(canvas.toDataURL("image/png")))
+    }
+
+    image.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source)
   }
 
   // private
@@ -14,7 +26,7 @@ export default class extends Controller {
     const link = document.createElement("a")
 
     link.href = imageDataUrl
-    link.download = `custom_emoji_${Date.now()}.png`
+    link.download = `avatar_${Date.now()}.png`
 
     return link
   }
@@ -25,9 +37,5 @@ export default class extends Controller {
     downloadLink.click()
 
     document.body.removeChild(downloadLink)
-  }
-
-  get #canvasElement() {
-    return this.element.querySelector("[data-canvas-composer-target='canvas']")
   }
 }
